@@ -34,3 +34,8 @@ Podfile.lock
 # SwiftPM
 .build
 .swiftpm
+
+# XCFramework build artifacts
+Demo/build/
+*.xcframework
+*.xcarchive

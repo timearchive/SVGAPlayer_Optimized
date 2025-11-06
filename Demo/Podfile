@@ -10,12 +10,41 @@ target 'Demo' do
   pod 'SVGAPlayer_Optimized', :path => '../'
 #  pod 'SVProgressHUD'
 
-  post_install do |installer|
-    installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |config|
-        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+end
+
+target 'OptSVGAPlayer' do
+  # 不使用 use_frameworks!，生成 .a 静态库
+  # 明确指定只需要库文件，不需要框架
+  pod 'SVGAPlayer', :git => 'https://github.com/Rogue24/SVGAPlayer-iOS.git', :tag => '2.5.8'
+
+end
+
+# Unified post_install hook for both targets
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+      config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
+
+      # For OptSVGAPlayer target, remove dynamic framework targets
+      # We only want static libraries (.a files)
+      if target.name.end_with?('-dynamic')
+        # Skip dynamic targets - they won't be needed
+        target.build_configurations.each do |cfg|
+          cfg.build_settings['EXCLUDED_ARCHS[sdk=*]'] = '$(ARCHS_STANDARD)'
+        end
       end
     end
   end
 
+  # Remove dynamic targets for OptSVGAPlayer dependencies
+  installer.pods_project.targets.select { |t| t.name.end_with?('-dynamic') }.each do |target|
+    target.build_phases.each do |phase|
+      installer.pods_project.targets.each do |other_target|
+        if other_target.name == 'Pods-OptSVGAPlayer'
+          other_target.dependencies.delete_if { |dep| dep.target == target }
+        end
+      end
+    end
+  end
 end
