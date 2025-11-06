@@ -100,7 +100,7 @@ extension ViewController: SVGAExPlayerDelegate {
             JPProgressHUD.show(isUserInteractionEnabled: true)
             reverseSwitch.isUserInteractionEnabled = false
         default:
-            JPProgressHUD.dismiss()
+//            JPProgressHUD.dismiss()
             reverseSwitch.isUserInteractionEnabled = true
         }
     }
