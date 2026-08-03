@@ -57,10 +57,10 @@ To be honest, its performance is not as good as [Lottie](https://github.com/airb
 To load and play:
 
 ```swift
-player.play("your_animation_path", fromFrame: 0, isAutoPlay: true)
+player.play("your_animation_path", from: .leading, isAutoPlay: true)
 ```
 
-- `fromFrame`: Start from which frame.
+- `from`: The starting position to play from (`.leading`, `.trailing`, or `.custom(frame)`).
 - `isAutoPlay`: Whether to start playing automatically after loading.
 
 The `SVGAParser` will be automatically invoked internally to load "remote/local" SVGA resources, so calling this method will not play immediately, as there will be a loading process.
@@ -403,8 +403,8 @@ That said, I *did* fork [SVGAPlayer](https://github.com/Rogue24/SVGAPlayer-iOS),
 #### If needed, you can install both libraries via CocoaPods:
 
 ```ruby
-pod 'SVGAPlayer', :git => 'https://github.com/Rogue24/SVGAPlayer-iOS.git', :tag => '2.5.8'
-pod 'SVGAPlayer_Optimized', :git => 'https://github.com/Rogue24/SVGAPlayer_Optimized.git', :tag => '0.1.4'
+pod 'SVGAPlayer', :git => 'https://github.com/Rogue24/SVGAPlayer-iOS.git', :tag => '2.5.9'
+pod 'SVGAPlayer_Optimized', :git => 'https://github.com/Rogue24/SVGAPlayer_Optimized.git', :tag => '0.1.5'
 ```
 
 #### Swift Package Manager Support
