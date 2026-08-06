@@ -1,2 +1,2 @@
 #import "SVGARePlayer.h"
-#import "SVGAVideoEntity+Extension.h"
+#import <SVGAPlayer/SVGAParser.h>

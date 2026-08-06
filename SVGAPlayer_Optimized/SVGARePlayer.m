@@ -10,7 +10,6 @@
 #import <SVGAPlayer/SVGAContentLayer.h>
 #import <SVGAPlayer/SVGABitmapLayer.h>
 #import <SVGAPlayer/SVGAAudioLayer.h>
-#import <SVGAPlayer/SVGAAudioEntity.h>
 #import <pthread.h>
 
 #ifdef DEBUG
@@ -485,6 +484,62 @@ static inline void _jp_dispatch_sync_on_main_queue(void (^block)(void)) {
         BOOL isNeedUpdate = _currentFrame != frame;
         _currentFrame = frame;
         [self __drawLayersIfNeeded:isNeedUpdate];
+    }
+}
+
+#pragma mark 截取当前帧画面
+- (UIImage *)snapshotCurrentFrameWithAsPNG:(BOOL)asPNG {
+    if (self.isAnimating) {
+        _JPLog(@"[SVGARePlayer_%p] 播放中，无法截取", self);
+        return nil;
+    }
+    
+    SVGAVideoEntity *videoItem = self.videoItem;
+    CGSize size = videoItem.videoSize;
+    
+    if (!videoItem || size.width < 1 || size.height < 1) {
+        _JPLog(@"[SVGARePlayer_%p] videoItem为空，无法截取", self);
+        return nil;
+    }
+    
+    UIGraphicsImageRenderer *renderer = [[UIGraphicsImageRenderer alloc] initWithSize:size format:[UIGraphicsImageRendererFormat defaultFormat]];
+    
+    UIImage *image = [renderer imageWithActions:^(UIGraphicsImageRendererContext *context) {
+        if ([NSThread isMainThread]) {
+            [self.drawLayer renderInContext:context.CGContext];
+        } else {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [self.drawLayer renderInContext:context.CGContext];
+            });
+        }
+    }];
+    
+    // 代码绘制的图片默认为jpeg格式（没有透明通道），png格式需要手动转换
+    if (image && asPNG) {
+        UIImage *pngImage = [UIImage imageWithData:UIImagePNGRepresentation(image)];
+        image = pngImage ? pngImage : image;
+    }
+    
+    return image;
+}
+
+- (void)renderCurrentFrameInContext:(UIGraphicsImageRendererContext *)context {
+    if (self.isAnimating) {
+        _JPLog(@"[SVGARePlayer_%p] 播放中，无法截取", self);
+        return;
+    }
+    
+    if (!context) {
+        _JPLog(@"[SVGARePlayer_%p] 传入context为nil，无法截取", self);
+        return;
+    }
+    
+    if ([NSThread isMainThread]) {
+        [self.drawLayer renderInContext:context.CGContext];
+    } else {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self.drawLayer renderInContext:context.CGContext];
+        });
     }
 }
 

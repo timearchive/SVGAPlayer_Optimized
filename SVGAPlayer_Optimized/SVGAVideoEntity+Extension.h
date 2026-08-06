@@ -5,7 +5,13 @@
 //  Created by aa on 2023/11/20.
 //
 
+#if __has_include(<OptSVGAPlayer/SVGAVideoEntity.h>)
 #import <OptSVGAPlayer/SVGAVideoEntity.h>
+#import <OptSVGAPlayer/SVGAAudioEntity.h>
+#else
+#import <SVGAPlayer/SVGAVideoEntity.h>
+#import <SVGAPlayer/SVGAAudioEntity.h>
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -29,6 +35,8 @@ typedef NS_ENUM(NSUInteger, SVGAVideoEntityError) {
 @property (readonly) NSTimeInterval duration;
 /// 资源错误
 @property (readonly) SVGAVideoEntityError entityError;
+/// 是否带有音频
+@property (readonly) BOOL isHasAudio;
 @end
 
 NS_ASSUME_NONNULL_END

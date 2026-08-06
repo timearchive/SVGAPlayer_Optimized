@@ -57,10 +57,10 @@ To be honest, its performance is not as good as [Lottie](https://github.com/airb
 To load and play:
 
 ```swift
-player.play("your_animation_path", fromFrame: 0, isAutoPlay: true)
+player.play("your_animation_path", from: .leading, isAutoPlay: true)
 ```
 
-- `fromFrame`: Start from which frame.
+- `from`: The starting position to play from (`.leading`, `.trailing`, or `.custom(frame)`).
 - `isAutoPlay`: Whether to start playing automatically after loading.
 
 The `SVGAParser` will be automatically invoked internally to load "remote/local" SVGA resources, so calling this method will not play immediately, as there will be a loading process.
@@ -275,9 +275,9 @@ func play()
 
 /// Play the current SVGA
 /// - Parameters:
-///   - fromFrame: From which frame to start
-///   - isAutoPlay: Whether to start playing automatically
-func play(fromFrame: Int, isAutoPlay: Bool) 
+///  - from: The starting position to play from (`.leading`, `.trailing`, or `.custom(frame)`)
+///  - isAutoPlay: Whether to start playing automatically
+func play(from: SVGAPlayFrom, isAutoPlay: Bool) 
 
 /// Reset the current SVGA (back to the beginning, reset completion count)
 /// If `startFrame` or `endFrame` is set, it starts from `leadingFrame`
@@ -393,7 +393,7 @@ Just drag these files directly into your project.
 #### Alternatively, you can install it via CocoaPods:
 
 ```ruby
-pod 'SVGAPlayer_Optimized', :git => 'https://github.com/Rogue24/SVGAPlayer_Optimized.git', :tag => '0.1.1'
+pod 'SVGAPlayer_Optimized', :git => 'https://github.com/Rogue24/SVGAPlayer_Optimized.git', :tag => '0.1.5'
 ```
 
 **Note:** Since this library depends on [SVGAPlayer](https://github.com/svga/SVGAPlayer-iOS), which is no longer maintained by the original author, and publishing to the CocoaPods public repo requires a minimum deployment target of **iOS 12+** (while the original SVGAPlayer supports **iOS 7+**), I had to fork the original SVGAPlayer, update its deployment target, and publish it as a personal pod. This goes beyond the scope of typical maintenance.
@@ -403,6 +403,28 @@ That said, I *did* fork [SVGAPlayer](https://github.com/Rogue24/SVGAPlayer-iOS),
 #### If needed, you can install both libraries via CocoaPods:
 
 ```ruby
-pod 'SVGAPlayer', :git => 'https://github.com/Rogue24/SVGAPlayer-iOS.git', :tag => '2.5.8'
-pod 'SVGAPlayer_Optimized', :git => 'https://github.com/Rogue24/SVGAPlayer_Optimized.git', :tag => '0.1.2'
+pod 'SVGAPlayer', :git => 'https://github.com/Rogue24/SVGAPlayer-iOS.git', :tag => '2.5.9'
+pod 'SVGAPlayer_Optimized', :git => 'https://github.com/Rogue24/SVGAPlayer_Optimized.git', :tag => '0.1.5'
 ```
+
+#### Swift Package Manager Support
+
+This library now supports Swift Package Manager. Please use the `SPM` branch:
+
+```swift
+.dependencies: [
+    .package(url: "https://github.com/Rogue24/SVGAPlayer_Optimized.git", branch: "SPM")
+]
+```
+
+Or add the following URL in Xcode and select the `SPM` branch:
+
+```swift
+https://github.com/Rogue24/SVGAPlayer_Optimized.git
+```
+
+**Note:**
+
+- This library depends on my forked and updated version of [SVGAPlayer](https://github.com/Rogue24/SVGAPlayer-iOS).
+- The dependency includes built-in Protobuf **3.29.5** source code, avoiding external Protobuf compatibility issues.
+- The minimum supported iOS version is **iOS 15.5+**, due to using a more stable version of [ZipArchive](https://github.com/ZipArchive/ZipArchive/releases/tag/2.5.0).

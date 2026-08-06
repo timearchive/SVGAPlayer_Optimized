@@ -389,7 +389,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "bash /tmp/copy_all_headers.sh";
+			shellScript = "set -e\nHEADERS_DIR=\"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}\"\nmkdir -p \"${HEADERS_DIR}\"\ncp -f \"${SRCROOT}\"/OptSVGAPlayer/*.h \"${HEADERS_DIR}/\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
