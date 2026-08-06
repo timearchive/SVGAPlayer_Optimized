@@ -23,6 +23,7 @@ FOUNDATION_EXPORT const unsigned char OptSVGAPlayerVersionString[];
 // Import all public headers from SVGAPlayer (compiled into this framework)
 #import <OptSVGAPlayer/SVGA.h>
 #import <OptSVGAPlayer/Svga.pbobjc.h>
+#import <OptSVGAPlayer/Protobuf-library-umbrella.h>
 #import <OptSVGAPlayer/SVGAPlayer.h>
 #import <OptSVGAPlayer/SVGAParser.h>
 #import <OptSVGAPlayer/SVGAVideoEntity.h>
